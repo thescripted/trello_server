@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Question Marks added to fulfill on delete cascade
+model card {
+  card_id    Int      @default(autoincrement()) @id
+  list_id    Int?
+  content    String
+  created_at DateTime @default(now())
+  card_order Int
+  List       list?     @relation(fields: [list_id], references: [list_id])
+}
+
+model list {
+  list_id    Int      @default(autoincrement()) @id
+  title      String
+  created_at DateTime @default(now())
+  list_order Int
+  Card       card[]
+}
